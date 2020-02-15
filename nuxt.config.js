@@ -18,17 +18,17 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'MyCode.rip',
-    titleTemplate: '%s | MyCode.rip',
+    title: 'BlogNeo.rip',
+    titleTemplate: '%s | BlogNeo.com',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'google-site-verification', content: 'TeBuCNCTOyUHjtIq4eNw5aiyr0a86CB4Ikpqr4m4nrk' },
       { hid: 'description', name: 'description', content: 'Webエンジニアのブログ' },
-      { hid: 'og:title', property: 'og:title', content: 'MyCode.rip' },
+      { hid: 'og:title', property: 'og:title', content: 'BlogNeo.com' },
       { hid: 'og:description', property: 'og:description', content: 'Webエンジニアのブログ' },
       { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
-      { hid: 'twitter:image', name: 'twitter:image', content: 'https://mycode.rip/twitter_card_summary.jpg' }
+      { hid: 'twitter:image', name: 'twitter:image', content: 'https://blog-neo.com/twitter_card_summary.jpg' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -102,7 +102,7 @@ module.exports = {
   ** @nuxtjs/sitemap configuration
   */
   sitemap: {
-    hostname: 'https://mycode.rip',
+    hostname: 'https://blog-neo.com',
     cacheTime: 1000 * 60 * 15, // 15 minutes
     generate: true,
     routes: getRoutes
