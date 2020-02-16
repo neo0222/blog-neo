@@ -18,7 +18,8 @@ export default {
     const select = [
       'sys.createdAt',
       'fields.title',
-      'fields.slug'
+      'fields.slug',
+      'fields.category',
     ]
 
     const rawPosts = await app.$contentful.getEntries({
@@ -28,9 +29,11 @@ export default {
       })
     
     const posts = rawPosts.items
+    const categories = rawPosts.includes.Entry.filter(entry => entry.sys.contentType.sys.id === 'category')
 
     return {
       posts: posts,
+      categories: categories,
     }
   },
 
