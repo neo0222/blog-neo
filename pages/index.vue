@@ -1,17 +1,16 @@
 <template>
   <div>
-    <DisplaySwitchLink style="height: 25px; display: flex; justify-content: center;"/>
     <TheNavMenu
-      :categories="categories"
-      defaultCategory="All"/>
+      :categories="categories"/>
     <IndexPost 
-      v-for="post in posts"
+      v-for="post in displayedPosts"
       :key="post.sys.id"
       :post="post"
       :indexPostBoxCardClass="indexPostBoxCardClass"
       :indexPostImageClass="indexPostImageClass"
       :divClass="divClass"
       class="index-post"/>
+
     <hr />
     <AboutMe/>
   </div>
@@ -21,13 +20,19 @@
 import TheNavMenu from '~/components/TheNavMenu'
 import IndexPost from '~/components/IndexPost'
 import AboutMe from '~/components/AboutMe'
-import DisplaySwitchLink from '~/components/DisplaySwitchLink'
 
 const defaultCategory = 'All'
 
 export default {
-  components: { TheNavMenu, IndexPost, AboutMe, DisplaySwitchLink },
+  components: { TheNavMenu, IndexPost, AboutMe },
 
+  data () {
+    return {
+      activeCategory: defaultCategory,
+      width: 0,
+      height: 0,
+    }
+  },
   async asyncData ({ app }) {
     const select = [
       'sys.createdAt',
@@ -57,16 +62,64 @@ export default {
     }
   },
   computed: {
+    displayedPosts () {
+      return this.activeCategory === defaultCategory ?
+        this.posts : this.posts.filter(post => post.fields.category.fields.title === this.activeCategory)
+    },
+    contentWidth () {
+      return this.width - 40
+    },
     indexPostBoxCardClass () {
-      return `width: 340px; height: 273.59px;`
+      return `width: ${this.cardWidth}px; height: ${this.cardHeight}px;`
     },
     indexPostImageClass () {
-      return `width: 100%; height: 191.52px; object-fit: cover; display: block;`
+      return `width: 100%; height: ${this.headerImageHeight}px; object-fit: cover; display: block;`
     },
     divClass () {
-      return `height: 74.34px; padding: 13.68px; font-size: 100%`
+      return `height: ${this.cardHeight - this.headerImageHeight}; padding: ${this.cardHeight / 20}px; font-size: 100%`
+    },
+    cardWidth () {
+      if (this.contentWidth > 1200) {
+        return Math.min(Math.floor((this.contentWidth - 30) / 4), 342.5)
+      } else if (1200>= this.contentWidth && this.contentWidth > 800) {
+        return Math.floor((this.contentWidth - 20) / 3)
+      } else if (800>= this.contentWidth && this.contentWidth > 600) {
+        return Math.floor((this.contentWidth - 10) / 2)
+      } else {
+        return (this.contentWidth - 10)
+      }
+      
+    },
+    cardHeight () {
+      return this.cardWidth * 0.8
+    },
+    headerImageHeight () {
+      return this.cardHeight * 0.7
     },
   },
+  methods: {
+    handleResize: function() {
+      if (process.browser) {
+        // resizeのたびにこいつが発火するので、ここでやりたいことをやる
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+      }
+      
+    }
+  },
+  mounted: function () {
+    if (process.browser) {
+      window.addEventListener('resize', this.handleResize)
+      this.width = window.innerWidth
+      this.height =  window.innerHeight
+    }
+  },
+  beforeDestroy: function () {
+    if (process.browser) {
+      window.removeEventListener('resize', this.handleResize)
+    }
+    
+  }
 }
 </script>
 

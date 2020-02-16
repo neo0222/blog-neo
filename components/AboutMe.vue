@@ -7,13 +7,13 @@
 
     <ul>
       <li>
-        <a href="https://qiita.com/neo0222" target="_blank" rel="nofollow noreferrer">Qiita @neo0222</a>
+        <a href="https://qiita.com/hareku" target="_blank" rel="nofollow noreferrer">Qiita @hareku</a>
       </li>
       <li>
-        <a href="https://github.com/neo0222" target="_blank" rel="nofollow noreferrer">GitHub @neo0222</a>
+        <a href="https://github.com/hareku" target="_blank" rel="nofollow noreferrer">GitHub @hareku</a>
       </li>
       <li>
-        <a href="https://www.instagram.com/neostagram0222/" target="_blank" rel="nofollow noreferrer">Instagram @neostagram0222</a>
+        <a href="https://twitter.com/hareku908" target="_blank" rel="nofollow noreferrer">Twitter @hareku908</a>
       </li>
     </ul>
   </div>
@@ -23,7 +23,7 @@
 export default {
   computed: {
     aboutMe () {
-      return { name: 'neo', job: 'Software Engineer' }
+      return { name: 'hareku', job: 'Software Engineer' }
     }
   }
 }
