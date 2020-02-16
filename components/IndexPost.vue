@@ -1,13 +1,18 @@
 <template>
-  <div>
-    <h1 class="post-head">
-      <nuxt-link :to="{ name: 'slug', params: { slug: post.fields.slug }}" class="post-head__title">{{ post.fields.title }}</nuxt-link>
-    </h1>
+  <el-card :body-style="{ padding: '0px' }" :style="indexPostBoxCardClass">
+    <el-image
+      :src="post.fields.headerImage.fields.file.url"
+      :style="indexPostImageClass"/>
+    <div :style="divClass">
+      <h4 class="post-head">
+        <nuxt-link :to="{ name: 'slug', params: { slug: post.fields.slug }}" class="post-head__title">{{ post.fields.title }}</nuxt-link>
+      </h4>
+      <div class="post-date">
+        <time :datetime="post.sys.createdAt">{{ displayCreatedAt }}</time>
+      </div>
 
-    <div class="post-date">
-      <time :datetime="post.sys.createdAt">{{ displayCreatedAt }}</time>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -17,6 +22,18 @@ export default {
   props: {
     post: {
       type: Object,
+      required: true
+    },
+    indexPostBoxCardClass: {
+      type: String,
+      required: true
+    },
+    indexPostImageClass: {
+      type: String,
+      required: true,
+    },
+    divClass: {
+      type: String,
       required: true
     }
   },
@@ -34,8 +51,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+html {
+  font-size: 100%;
+}
+
 .post-head {
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin-bottom: 4px;
 
   &__title {
@@ -46,4 +68,23 @@ export default {
     }
   }
 }
+
+.post-date {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+
+  &__title {
+    color: inherit;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+
+// .box-card {
+//   width: 300px;
+//   height: 250px;
+// }
 </style>
