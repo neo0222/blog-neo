@@ -1,8 +1,8 @@
 # Blog - Nuxt.js + Contentful
 
-- Blog: https://mycode.rip/
-- Qiita: https://qiita.com/hareku/items/acd9dfe5d77293a4a6d9
-- MyCode.rip(Terraform): https://github.com/hareku/mycode.rip-terraform
+- Blog: https://blog-neo.com/
+- Qiita: https://qiita.com/neo0222
+- blog-neo.com(Terraform): https://github.com/neo0222/blog-neo-terraform
 
 ## Build Setup
 

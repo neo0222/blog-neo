@@ -2,29 +2,48 @@
   <div>
     <TheNavMenu
       :categories="categories"/>
-    <IndexPost 
-      v-for="post in displayedPosts"
-      :key="post.sys.id"
-      :post="post"
-      :indexPostBoxCardClass="indexPostBoxCardClass"
-      :indexPostImageClass="indexPostImageClass"
-      :divClass="divClass"
-      class="index-post"/>
-
-    <hr />
+    <el-col style="padding-bottom: 20px">
+      <CardColumn
+        :columnDivClass="columnDivClass"
+        :posts="firstColumn"
+        :indexPostBoxCardClass="indexPostBoxCardClass"
+        :indexPostImageClass="indexPostImageClass"
+        :divClass="divClass"/>
+      <CardColumn
+        :columnDivClass="columnDivClass"
+        :posts="secondColumn"
+        :indexPostBoxCardClass="indexPostBoxCardClass"
+        :indexPostImageClass="indexPostImageClass"
+        :divClass="divClass"/>
+      <CardColumn
+        :columnDivClass="columnDivClass"
+        :posts="thirdColumn"
+        :indexPostBoxCardClass="indexPostBoxCardClass"
+        :indexPostImageClass="indexPostImageClass"
+        :divClass="divClass"/>
+      <CardColumn
+        :columnDivClass="columnDivClass"
+        :posts="fourthColumn"
+        :indexPostBoxCardClass="indexPostBoxCardClass"
+        :indexPostImageClass="indexPostImageClass"
+        :divClass="divClass"/>
+    </el-col>
+    <div>
+      <hr />
+    </div>
     <AboutMe/>
   </div>
 </template>
 
 <script>
 import TheNavMenu from '~/components/TheNavMenu'
-import IndexPost from '~/components/IndexPost'
 import AboutMe from '~/components/AboutMe'
+import CardColumn from '~/components/CardColumn'
 
 const defaultCategory = 'All'
 
 export default {
-  components: { TheNavMenu, IndexPost, AboutMe },
+  components: { TheNavMenu, AboutMe, CardColumn },
 
   data () {
     return {
@@ -35,6 +54,7 @@ export default {
   },
   async asyncData ({ app }) {
     const select = [
+      'sys.id',
       'sys.createdAt',
       'fields.title',
       'fields.slug',
@@ -62,7 +82,7 @@ export default {
     }
   },
   computed: {
-    displayedPosts () {
+    filteredPostsByCategory () {
       return this.activeCategory === defaultCategory ?
         this.posts : this.posts.filter(post => post.fields.category.fields.title === this.activeCategory)
     },
@@ -70,37 +90,70 @@ export default {
       return this.width - 40
     },
     indexPostBoxCardClass () {
-      return `width: ${this.cardWidth}px; height: ${this.cardHeight}px;`
+      return `width: ${this.cardWidth}px;`
     },
     indexPostImageClass () {
-      return `width: 100%; height: ${this.headerImageHeight}px; object-fit: cover; display: block;`
+      return 'width: 100%; object-fit: cover; display: block;'
     },
     divClass () {
-      return `height: ${this.cardHeight - this.headerImageHeight}; padding: ${this.cardHeight / 20}px; font-size: 100%`
+      // 記事説明欄のpaddingはカード幅に比例
+      return `padding: ${this.cardWidth / 25}px; font-size: 100%`
+    },
+    columnDivClass () {
+      // カードの間隔は10px
+      return `width: ${this.cardWidth + 10}px; height: auto; float: left;`
     },
     cardWidth () {
-      if (this.contentWidth > 1200) {
-        return Math.min(Math.floor((this.contentWidth - 30) / 4), 342.5)
-      } else if (1200>= this.contentWidth && this.contentWidth > 800) {
-        return Math.floor((this.contentWidth - 20) / 3)
+      // 間隔の分差し引く
+      return Math.floor(this.cardColumnWidth - 10)
+    },
+    cardColumnWidth () {
+      // カードの幅はカードを何列並べるかで決まる
+      return this.contentWidth / this.numberOfColumns
+    },
+    numberOfColumns() {
+      // カードの列数はウィンドウの幅で決まる
+      if (this.contentWidth > 1050) {
+        return 4
+      } else if (1050>= this.contentWidth && this.contentWidth > 800) {
+        return 3
       } else if (800>= this.contentWidth && this.contentWidth > 600) {
-        return Math.floor((this.contentWidth - 10) / 2)
+        return 2
       } else {
-        return (this.contentWidth - 10)
+        return 1
       }
       
     },
-    cardHeight () {
-      return this.cardWidth * 0.8
+    // カードを左上から順に詰めていきたいので、表示対象を順に各列に割り振っていく
+    firstColumn () {
+      // 1列目
+      return this.filteredPostsByCategory.filter((el, index) => {
+        return index % this.numberOfColumns === 0
+      })
     },
-    headerImageHeight () {
-      return this.cardHeight * 0.7
+    secondColumn () {
+      // 2列目（画面幅が640px未満だと要素0）
+      return this.filteredPostsByCategory.filter((el, index) => {
+        return index % this.numberOfColumns === 1
+      })
+    },
+    thirdColumn () {
+      // 3列目（画面幅が840px未満だと要素0）
+      return this.filteredPostsByCategory.filter((el, index) => {
+        return index % this.numberOfColumns === 2
+      })
+    },
+    fourthColumn () {
+      // 4列目（画面幅が1090px未満だと要素0）
+      return this.filteredPostsByCategory.filter((el, index) => {
+        return index % this.numberOfColumns === 3
+      })
     },
   },
+  // 以下、画面サイズ取得関連処理
   methods: {
     handleResize: function() {
       if (process.browser) {
-        // resizeのたびにこいつが発火するので、ここでやりたいことをやる
         this.width = window.innerWidth;
         this.height = window.innerHeight;
       }
@@ -123,10 +176,3 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.index-post {
-  margin: 10px 5px 10px 5px;
-  text-align: justify;
-  display: inline-block;
-}
-</style>
