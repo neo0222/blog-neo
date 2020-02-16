@@ -35,6 +35,7 @@ export default {
   },
   async asyncData ({ app }) {
     const select = [
+      'sys.id',
       'sys.createdAt',
       'fields.title',
       'fields.slug',
@@ -80,11 +81,11 @@ export default {
     },
     cardWidth () {
       if (this.contentWidth > 1200) {
-        return Math.min(Math.floor((this.contentWidth - 30) / 4), 342.5)
+        return Math.min(Math.floor((this.contentWidth - 40) / 4), 340)
       } else if (1200>= this.contentWidth && this.contentWidth > 800) {
-        return Math.floor((this.contentWidth - 20) / 3)
+        return Math.floor((this.contentWidth - 30) / 3)
       } else if (800>= this.contentWidth && this.contentWidth > 600) {
-        return Math.floor((this.contentWidth - 10) / 2)
+        return Math.floor((this.contentWidth - 20) / 2)
       } else {
         return (this.contentWidth - 10)
       }
@@ -125,8 +126,7 @@ export default {
 
 <style lang="scss" scoped>
 .index-post {
-  margin: 10px 5px 10px 5px;
-  text-align: justify;
+  margin: 5px 5px 5px 5px;
   display: inline-block;
 }
 </style>

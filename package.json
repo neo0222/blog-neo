@@ -2,7 +2,7 @@
   "name": "blog-neo.com",
   "version": "1.0.0",
   "description": "Nuxt.js project",
-  "author": "hareku <hareku908@gmail.com>",
+  "author": "neo <taakaaneo@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "nuxt",
