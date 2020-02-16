@@ -1,10 +1,11 @@
 <template>
   <div class="app-container">
-    <main class="main">
-      <div class="content">
-        <slot/>
+    <header>
+      <div class="site-title">
+        <nuxt-link :to="{ name: 'index' }" exact class="site-title__link">Neo Blog</nuxt-link>
       </div>
-    </main>
+      <div class="site-description grey-text">Webエンジニアのブログ</div>
+    </header>
   </div>
 </template>
 

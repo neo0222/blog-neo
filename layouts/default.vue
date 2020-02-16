@@ -1,13 +1,22 @@
 <template>
-  <DefaultLayout>
-    <nuxt/>
-  </DefaultLayout>
+  <div>
+    <div>
+      <TheHeader />
+    </div>
+    <DefaultLayout>
+      <nuxt/>
+    </DefaultLayout>
+  </div>
 </template>
 
 <script>
 import DefaultLayout from '~/components/DefaultLayout'
+import TheHeader from '~/components/TheHeader'
 
 export default {
-  components: { DefaultLayout }
+  components: {
+    DefaultLayout,
+    TheHeader,
+  }
 }
 </script>
