@@ -2,15 +2,16 @@
   <div>
     <TheNavMenu
       :categories="categories"
-      defaultCategory="All"/>
+      :defaultCategory="activeCategory"/>
     <IndexPost 
-      v-for="post in displayedPosts"
+      v-for="post in posts"
       :key="post.sys.id"
       :post="post"
       :indexPostBoxCardClass="indexPostBoxCardClass"
       :indexPostImageClass="indexPostImageClass"
       :divClass="divClass"
       class="index-post"/>
+
     <hr />
     <AboutMe/>
   </div>
@@ -21,19 +22,16 @@ import TheNavMenu from '~/components/TheNavMenu'
 import IndexPost from '~/components/IndexPost'
 import AboutMe from '~/components/AboutMe'
 
-const defaultCategory = 'All'
-
 export default {
   components: { TheNavMenu, IndexPost, AboutMe },
 
   data () {
     return {
-      activeCategory: defaultCategory,
       width: 0,
       height: 0,
     }
   },
-  async asyncData ({ app }) {
+  async asyncData ({ app, params }) {
     const select = [
       'sys.createdAt',
       'fields.title',
@@ -48,10 +46,13 @@ export default {
         select: select.join(',')
       })
     
-    const posts = rawPosts.items
+    console.log(params.category)
+
+    const posts = rawPosts.items.filter(post => post.fields.category.fields.title === params.category)
     const categories = rawPosts.includes.Entry.filter(entry => entry.sys.contentType.sys.id === 'category')
 
     return {
+      activeCategory: params.category,
       posts: posts,
       categories: categories,
     }
@@ -62,10 +63,6 @@ export default {
     }
   },
   computed: {
-    displayedPosts () {
-      return this.activeCategory === defaultCategory ?
-        this.posts : this.posts.filter(post => post.fields.category.fields.title === this.activeCategory)
-    },
     contentWidth () {
       return this.width - 40
     },
