@@ -6,14 +6,14 @@
 			class="nav-menu">
 			<el-menu-item
 				index="All">
-				<nuxt-link :to="{ name: 'index' }">All</nuxt-link>
+				<nuxt-link :to="{ name: 'sp' }">All</nuxt-link>
 			</el-menu-item>
 			<el-menu-item
 				v-for="category in categories"
 				:key="category.sys.id"
 				:index="category.fields.title">
 				<nuxt-link
-					:to="{ name: 'category', params: { category: category.fields.title }}">
+					:to="`/sp/${category.fields.title}`">
 					{{ category.fields.title }}
 				</nuxt-link>
 			</el-menu-item>

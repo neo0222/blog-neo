@@ -1,9 +1,9 @@
 <template>
   <div>
     <DisplaySwitchLink style="height: 25px; display: flex; justify-content: center;"/>
-    <TheNavMenu
+    <TheNavMenuForSp
       :categories="categories"
-      defaultCategory="All"/>
+      :defaultCategory="activeCategory"/>
     <IndexPost 
       v-for="post in posts"
       :key="post.sys.id"
@@ -12,23 +12,22 @@
       :indexPostImageClass="indexPostImageClass"
       :divClass="divClass"
       class="index-post"/>
+
     <hr />
     <AboutMe/>
   </div>
 </template>
 
 <script>
-import TheNavMenu from '~/components/TheNavMenu'
+import TheNavMenuForSp from '~/components/TheNavMenuForSp'
 import IndexPost from '~/components/IndexPost'
 import AboutMe from '~/components/AboutMe'
 import DisplaySwitchLink from '~/components/DisplaySwitchLink'
 
-const defaultCategory = 'All'
-
 export default {
-  components: { TheNavMenu, IndexPost, AboutMe, DisplaySwitchLink },
+  components: { TheNavMenuForSp, IndexPost, AboutMe, DisplaySwitchLink },
 
-  async asyncData ({ app }) {
+  async asyncData ({ app, params }) {
     const select = [
       'sys.createdAt',
       'fields.title',
@@ -43,10 +42,13 @@ export default {
         select: select.join(',')
       })
     
-    const posts = rawPosts.items
+    console.log(params.category)
+
+    const posts = rawPosts.items.filter(post => post.fields.category.fields.title === params.category)
     const categories = rawPosts.includes.Entry.filter(entry => entry.sys.contentType.sys.id === 'category')
 
     return {
+      activeCategory: params.category,
       posts: posts,
       categories: categories,
     }
@@ -58,13 +60,13 @@ export default {
   },
   computed: {
     indexPostBoxCardClass () {
-      return `width: 340px; height: 273.59px;`
+      return `width: 85vw;`
     },
     indexPostImageClass () {
-      return `width: 100%; height: 191.52px; object-fit: cover; display: block;`
+      return `width: 85vw; object-fit: cover; display: block;`
     },
     divClass () {
-      return `height: 74.34px; padding: 13.68px; font-size: 100%`
+      return `padding: 4vw; font-size: 100%`
     },
   },
 }
