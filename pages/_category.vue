@@ -3,7 +3,7 @@
     <DisplaySwitchLink style="height: 25px; display: flex; justify-content: center;"/>
     <TheNavMenu
       :categories="categories"
-      defaultCategory="All"/>
+      :defaultCategory="activeCategory"/>
     <IndexPost 
       v-for="post in posts"
       :key="post.sys.id"
@@ -12,6 +12,7 @@
       :indexPostImageClass="indexPostImageClass"
       :divClass="divClass"
       class="index-post"/>
+
     <hr />
     <AboutMe/>
   </div>
@@ -23,12 +24,10 @@ import IndexPost from '~/components/IndexPost'
 import AboutMe from '~/components/AboutMe'
 import DisplaySwitchLink from '~/components/DisplaySwitchLink'
 
-const defaultCategory = 'All'
-
 export default {
   components: { TheNavMenu, IndexPost, AboutMe, DisplaySwitchLink },
-
-  async asyncData ({ app }) {
+  
+  async asyncData ({ app, params }) {
     const select = [
       'sys.createdAt',
       'fields.title',
@@ -43,10 +42,13 @@ export default {
         select: select.join(',')
       })
     
-    const posts = rawPosts.items
+    console.log(params.category)
+
+    const posts = rawPosts.items.filter(post => post.fields.category.fields.title === params.category)
     const categories = rawPosts.includes.Entry.filter(entry => entry.sys.contentType.sys.id === 'category')
 
     return {
+      activeCategory: params.category,
       posts: posts,
       categories: categories,
     }
