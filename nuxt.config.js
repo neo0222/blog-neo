@@ -18,7 +18,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'BlogNeo.rip',
+    title: 'BlogNeo.com',
     titleTemplate: '%s | BlogNeo.com',
     meta: [
       { charset: 'utf-8' },
