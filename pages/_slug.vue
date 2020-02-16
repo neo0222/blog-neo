@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content">
     <PostContent :post="post" :includes="includes"/>
 
     <ShareButtons class="page-share-buttons"/>
@@ -74,5 +74,11 @@ export default {
 
 .back-to-home {
   margin-top: 60px;
+}
+
+.content {
+  max-width: 800px;
+  margin-right: auto;
+  margin-left: auto;
 }
 </style>

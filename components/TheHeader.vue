@@ -4,7 +4,6 @@
       <div class="site-title">
         <nuxt-link :to="{ name: 'index' }" exact class="site-title__link">Neo Blog</nuxt-link>
       </div>
-      <div class="site-description grey-text">Webエンジニアのブログ</div>
     </header>
   </div>
 </template>
@@ -14,11 +13,11 @@
   max-width: 1000px;
   margin-right: auto;
   margin-left: auto;
-  padding: 20px;
+  padding: 20px 20px 0px 20px;
 }
 
 .site-title {
-  font-size: 4.6rem;
+  font-size: 3.0rem;
   line-height: 1.3;
   font-weight: bold;
   text-align: center;

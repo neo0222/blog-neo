@@ -1,5 +1,7 @@
 <template>
   <div>
+    <TheNavMenu
+      :categories="categories"/>
     <IndexPost v-for="post in displayedPosts" :key="post.sys.id" :post="post" class="index-post"/>
 
     <hr />
@@ -8,13 +10,14 @@
 </template>
 
 <script>
+import TheNavMenu from '~/components/TheNavMenu'
 import IndexPost from '~/components/IndexPost'
 import AboutMe from '~/components/AboutMe'
 
 const defaultCategory = 'All'
 
 export default {
-  components: { IndexPost, AboutMe },
+  components: { TheNavMenu, IndexPost, AboutMe },
 
   data () {
     return {
@@ -52,7 +55,8 @@ export default {
 
   computed: {
     displayedPosts () {
-      return this.posts.filter(post => post.fields.category.fields.title === this.activeCategory)
+      return this.activeCategory === defaultCategory ?
+        this.posts : this.posts.filter(post => post.fields.category.fields.title === this.activeCategory)
     }
   }
 }

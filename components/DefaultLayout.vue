@@ -10,10 +10,10 @@
 
 <style lang="scss" scoped>
 .app-container {
-  max-width: 1000px;
+  max-width: 1440px;
   margin-right: auto;
   margin-left: auto;
-  padding: 20px;
+  padding: 0px 20px 20px 20px;
 }
 
 .site-title {
@@ -38,11 +38,11 @@
 }
 
 .main {
-  margin-top: 30px;
+  margin-top: 0px;
 }
 
 .content {
-  max-width: 800px;
+  max-width: 1500px;
   margin-right: auto;
   margin-left: auto;
 }
