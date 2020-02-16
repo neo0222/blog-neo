@@ -14,24 +14,24 @@ import AboutMe from '~/components/AboutMe'
 export default {
   components: { IndexPost, AboutMe },
 
-  asyncData ({ app }) {
+  async asyncData ({ app }) {
     const select = [
       'sys.createdAt',
       'fields.title',
       'fields.slug'
     ]
 
-    return app.$contentful.getEntries({
+    const rawPosts = await app.$contentful.getEntries({
         content_type: 'post',
         order: '-sys.createdAt',
         select: select.join(',')
       })
-      .then(({ items, includes }) => {
-        return {
-          posts: items,
-          includes
-        }
-      })
+    
+    const posts = rawPosts.items
+
+    return {
+      posts: posts,
+    }
   },
 
   head () {
