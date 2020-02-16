@@ -1,18 +1,21 @@
 <template>
     <el-menu
-			default-active="All"
+			:default-active="defaultCategory"
 			mode="horizontal"
 			@select="handleSelect"
 			class="nav-menu">
 			<el-menu-item
 				index="All">
-				All
+				<nuxt-link :to="{ name: 'index' }">All</nuxt-link>
 			</el-menu-item>
 			<el-menu-item
 				v-for="category in categories"
 				:key="category.sys.id"
 				:index="category.fields.title">
-				{{ category.fields.title }}
+				<nuxt-link
+					:to="{ name: 'category', params: { category: category.fields.title }}">
+					{{ category.fields.title }}
+				</nuxt-link>
 			</el-menu-item>
 		</el-menu>
 </template>
@@ -24,6 +27,10 @@ export default {
       type: Array,
       required: true
 		},
+		defaultCategory: {
+			type: String,
+			required: true
+		}
 	},
 	methods: {
 		handleSelect(index) {
