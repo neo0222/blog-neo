@@ -1,6 +1,6 @@
 <template>
   <div>
-    <IndexPost v-for="post in posts" :key="post.sys.id" :post="post" class="index-post"/>
+    <IndexPost v-for="post in displayedPosts" :key="post.sys.id" :post="post" class="index-post"/>
 
     <hr />
     <AboutMe/>
@@ -11,9 +11,16 @@
 import IndexPost from '~/components/IndexPost'
 import AboutMe from '~/components/AboutMe'
 
+const defaultCategory = 'All'
+
 export default {
   components: { IndexPost, AboutMe },
 
+  data () {
+    return {
+      activeCategory: defaultCategory,
+    }
+  },
   async asyncData ({ app }) {
     const select = [
       'sys.createdAt',
@@ -40,6 +47,12 @@ export default {
   head () {
     return {
       titleTemplate: null
+    }
+  },
+
+  computed: {
+    displayedPosts () {
+      return this.posts.filter(post => post.fields.category.fields.title === this.activeCategory)
     }
   }
 }
