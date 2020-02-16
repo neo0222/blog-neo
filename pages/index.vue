@@ -1,6 +1,8 @@
 <template>
   <div>
-    <IndexPost v-for="post in posts" :key="post.sys.id" :post="post" class="index-post"/>
+    <TheNavMenu
+      :categories="categories"/>
+    <IndexPost v-for="post in displayedPosts" :key="post.sys.id" :post="post" class="index-post"/>
 
     <hr />
     <AboutMe/>
@@ -8,35 +10,53 @@
 </template>
 
 <script>
+import TheNavMenu from '~/components/TheNavMenu'
 import IndexPost from '~/components/IndexPost'
 import AboutMe from '~/components/AboutMe'
 
-export default {
-  components: { IndexPost, AboutMe },
+const defaultCategory = 'All'
 
-  asyncData ({ app }) {
+export default {
+  components: { TheNavMenu, IndexPost, AboutMe },
+
+  data () {
+    return {
+      activeCategory: defaultCategory,
+    }
+  },
+  async asyncData ({ app }) {
     const select = [
       'sys.createdAt',
       'fields.title',
-      'fields.slug'
+      'fields.slug',
+      'fields.category',
     ]
 
-    return app.$contentful.getEntries({
+    const rawPosts = await app.$contentful.getEntries({
         content_type: 'post',
         order: '-sys.createdAt',
         select: select.join(',')
       })
-      .then(({ items, includes }) => {
-        return {
-          posts: items,
-          includes
-        }
-      })
+    
+    const posts = rawPosts.items
+    const categories = rawPosts.includes.Entry.filter(entry => entry.sys.contentType.sys.id === 'category')
+
+    return {
+      posts: posts,
+      categories: categories,
+    }
   },
 
   head () {
     return {
       titleTemplate: null
+    }
+  },
+
+  computed: {
+    displayedPosts () {
+      return this.activeCategory === defaultCategory ?
+        this.posts : this.posts.filter(post => post.fields.category.fields.title === this.activeCategory)
     }
   }
 }

@@ -46,13 +46,15 @@ module.exports = {
   */
   plugins: [
     '~/plugins/contentful',
-    '~/plugins/markdown-it'
+    '~/plugins/markdown-it',
+    '~/plugins/element-ui',
   ],
   /*
   ** CSS
   */
   css: [
     { src: '~assets/app.scss', lang: 'scss' },
+    { src: 'element-ui/lib/theme-chalk/index.css', lang: 'css' },
   ],
   /*
   ** modules
