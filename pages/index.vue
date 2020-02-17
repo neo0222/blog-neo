@@ -41,6 +41,9 @@ import AboutMe from '~/components/AboutMe'
 import CardColumn from '~/components/CardColumn'
 
 const defaultCategory = 'All'
+// カードの表示領域の上限は画面幅1440pxに最適化されたもの。
+// それ以上大きい画面で表示してもカードが大きくならないようカード幅にも上限を設定する。
+const maxWidthOfCard = 340
 
 export default {
   components: { TheNavMenu, AboutMe, CardColumn },
@@ -105,7 +108,7 @@ export default {
     },
     cardWidth () {
       // 間隔の分差し引く
-      return Math.floor(this.cardColumnWidth - 10)
+      return Math.min(Math.floor(this.cardColumnWidth - 10), maxWidthOfCard)
     },
     cardColumnWidth () {
       // カードの幅はカードを何列並べるかで決まる
